@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace SPG.Controllers
 {
-    [Route("api/users")]
+    [Route("api/spg/users")]
     public class UserController : Controller
     {
         private ElectContext electContext;

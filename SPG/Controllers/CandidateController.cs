@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace SPG.Controllers
 {
-    [Route("api/candidates")]
+    [Route("api/spg/candidates")]
     public class CandidateController : Controller
     {
         private ElectContext electContext;

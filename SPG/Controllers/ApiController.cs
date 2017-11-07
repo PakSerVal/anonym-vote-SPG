@@ -9,7 +9,7 @@ using SPG.Models.Db;
 
 namespace SPG.Controllers
 {
-    [Route("api")]
+    [Route("api/spg")]
     public class ApiController : Controller
     {
         private ElectContext electContext;
