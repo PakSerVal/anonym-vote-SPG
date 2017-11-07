@@ -26,12 +26,45 @@ namespace SPG.Controllers
             return Ok(elections);
         }
 
+        [HttpPost("get-voters")]
+        public IActionResult getVotersById([FromBody][Bind("ID")] Election electionWrap)
+        {
+            if (electionWrap.ID != 0)
+            {
+                int electionId = electionWrap.ID;
+                Election election = electContext.Elections
+                    .Include(e => e.ElectionVoters)
+                    .ThenInclude(ev => ev.Voter)
+                    .SingleOrDefault(e => e.ID == electionId);
+                List<User> voters = new List<User>();
+                foreach(ElectionVoter ev in election.ElectionVoters)
+                {
+                    voters.Add(ev.Voter);
+                }
+                return Ok(voters);
+                
+            }
+            return BadRequest(new { message = "ID не указан" });
+        }
+
         [HttpPost("add")]
         public IActionResult Add([FromBody][Bind("Name")] Election election)
         {
             if (ModelState.IsValid)
             {
                 electContext.Elections.Add(election);
+                electContext.SaveChanges();
+                return Ok();
+            }
+            return BadRequest(new { message = "Ошибка валидации" });
+        }
+
+        [HttpPost("add-voter")]
+        public IActionResult AddVoter([FromBody] ElectionVoter electionVoter)
+        {
+            if (ModelState.IsValid)
+            {
+                electContext.ElectionVoters.Add(electionVoter);
                 electContext.SaveChanges();
                 return Ok();
             }

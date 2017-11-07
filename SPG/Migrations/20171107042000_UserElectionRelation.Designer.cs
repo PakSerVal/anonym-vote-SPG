@@ -12,9 +12,10 @@ using System;
 namespace SPG.Migrations
 {
     [DbContext(typeof(ElectContext))]
-    partial class ElectContextModelSnapshot : ModelSnapshot
+    [Migration("20171107042000_UserElectionRelation")]
+    partial class UserElectionRelation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

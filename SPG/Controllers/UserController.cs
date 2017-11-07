@@ -4,6 +4,7 @@ using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using SPG.Data;
 using SPG.Models.Db;
+using Microsoft.EntityFrameworkCore;
 
 namespace SPG.Controllers
 {
@@ -21,6 +22,28 @@ namespace SPG.Controllers
         public IActionResult GetList()
         {
             return Ok(electContext.Users.ToList());
+        }
+
+        [HttpPost("get-elections")]
+        public IActionResult getElectionsById([FromBody][Bind("ID")] User userIdWrap)
+        {
+            if (userIdWrap.ID != 0)
+            {
+                int userId = userIdWrap.ID;
+                User election = electContext.Users
+                    .Include(u => u.ElectionVoters)
+                    .ThenInclude(ev => ev.Election)
+                    .ThenInclude(e => e.Candidates)
+                    .SingleOrDefault(u => u.ID == userId);
+                List<Election> elections = new List<Election>();
+                foreach (ElectionVoter ev in election.ElectionVoters)
+                {
+                    elections.Add(ev.Election);
+                }
+                return Ok(elections);
+
+            }
+            return BadRequest(new { message = "ID не указан" });
         }
 
         [HttpPost("add")]

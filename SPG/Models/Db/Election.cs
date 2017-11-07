@@ -14,5 +14,7 @@ namespace SPG.Models.Db
         public string Name { get; set; }
 
         public ICollection<Candidate> Candidates { get; set; }
+
+        public ICollection<ElectionVoter> ElectionVoters { get; set; }
     }
 }

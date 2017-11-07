@@ -19,15 +19,15 @@ namespace SPG.Controllers
             this.electContext = electContext;
         }
 
-        [HttpPost("get-canditates-list")]
-        public IActionResult GetCandidatesList([FromBody][Bind("LIK")] User user)
+        [HttpPost("get-elections")]
+        public IActionResult GetElectionsList([FromBody][Bind("LIK")] User userLikWrap)
         {
             if (ModelState.IsValid)
             {
-                if (electContext.Users.FirstOrDefault(u => u.LIK == user.LIK) != null)
+                User user = electContext.Users.FirstOrDefault(u => u.LIK == userLikWrap.LIK);
+                if (user != null)
                 {
-                    //TODO: Разобраться с RedirectToAction (почему-то не работает)
-                    return new CandidateController(electContext).GetList();
+                   return new UserController(electContext).getElectionsById(user);
                 }
             }
             return BadRequest(new { message = "Ошибка валидации" });

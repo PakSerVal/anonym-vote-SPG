@@ -21,5 +21,7 @@ namespace SPG.Models.Db
 
         [Required]
         public UserRole Role { get; set; }
+
+        public ICollection<ElectionVoter> ElectionVoters { get; set; }
     }
 }
