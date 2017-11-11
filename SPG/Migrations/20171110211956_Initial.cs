@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace SPG.Migrations
 {
-    public partial class Initital : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -15,7 +15,7 @@ namespace SPG.Migrations
                 {
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -29,7 +29,13 @@ namespace SPG.Migrations
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     LIK = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Role = table.Column<byte>(type: "tinyint", nullable: false)
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Role = table.Column<byte>(type: "tinyint", nullable: false),
+                    SignatureModulus = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SignaturePubExponent = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    isRegistred = table.Column<bool>(type: "bit", nullable: false),
+                    salt = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -43,7 +49,7 @@ namespace SPG.Migrations
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     ElectionID = table.Column<int>(type: "int", nullable: true),
-                    FIO = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    FIO = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -56,10 +62,39 @@ namespace SPG.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "ElectionVoters",
+                columns: table => new
+                {
+                    ElectionId = table.Column<int>(type: "int", nullable: false),
+                    VoterId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ElectionVoters", x => new { x.ElectionId, x.VoterId });
+                    table.ForeignKey(
+                        name: "FK_ElectionVoters_Elections_ElectionId",
+                        column: x => x.ElectionId,
+                        principalTable: "Elections",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ElectionVoters_Users_VoterId",
+                        column: x => x.VoterId,
+                        principalTable: "Users",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Candidates_ElectionID",
                 table: "Candidates",
                 column: "ElectionID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ElectionVoters_VoterId",
+                table: "ElectionVoters",
+                column: "VoterId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -68,10 +103,13 @@ namespace SPG.Migrations
                 name: "Candidates");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "ElectionVoters");
 
             migrationBuilder.DropTable(
                 name: "Elections");
+
+            migrationBuilder.DropTable(
+                name: "Users");
         }
     }
 }

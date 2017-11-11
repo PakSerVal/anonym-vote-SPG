@@ -12,9 +12,10 @@ using System;
 namespace SPG.Migrations
 {
     [DbContext(typeof(ElectContext))]
-    partial class ElectContextModelSnapshot : ModelSnapshot
+    [Migration("20171110211956_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -72,15 +73,19 @@ namespace SPG.Migrations
                     b.Property<string>("LIK")
                         .IsRequired();
 
-                    b.Property<string>("Password");
+                    b.Property<string>("Password")
+                        .IsRequired();
 
                     b.Property<byte>("Role");
 
-                    b.Property<string>("SignatureModulus");
+                    b.Property<string>("SignatureModulus")
+                        .IsRequired();
 
-                    b.Property<string>("SignaturePubExponent");
+                    b.Property<string>("SignaturePubExponent")
+                        .IsRequired();
 
-                    b.Property<string>("UserName");
+                    b.Property<string>("UserName")
+                        .IsRequired();
 
                     b.Property<bool>("isRegistred");
 

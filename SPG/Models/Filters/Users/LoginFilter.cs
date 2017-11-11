@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
-using SPG.Models.Enities;
 
-namespace SPG.Models.Filters.Candidates
+
+namespace SPG.Models.Filters.Users
 {
-    public class AddOrUpdateFilter
+    public class LoginFilter
     {
         [Required]
-        public Candidate Candidate { get; set; }
+        public string Username { get; set; }
 
         [Required]
-        public int ElectionId { get; set; }
+        public string Password { get; set; }
     }
 }

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 
 
-namespace SPG.Models.Db
+namespace SPG.Models.Enities
 {
     public class ElectionVoter
     {

@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
 using SPG.Data;
-using SPG.Models.Db;
+using SPG.Models;
+using SPG.Models.Enities;
+using SPG.Utils;
+using SPG.Models.Filters.Users;
+using System.Collections.Generic;
+
 
 namespace SPG.Controllers
 {
@@ -19,24 +19,47 @@ namespace SPG.Controllers
             this.electContext = electContext;
         }
 
-        [HttpPost("get-elections")]
-        public IActionResult GetElectionsList([FromBody][Bind("LIK")] User userLikWrap)
+        [HttpPost("register-user")]
+        public IActionResult RegisterUser([FromBody] RegisterFilter filter)
         {
             if (ModelState.IsValid)
             {
-                User user = electContext.Users.FirstOrDefault(u => u.LIK == userLikWrap.LIK);
-                if (user != null)
+                Users usersModel = new Users(electContext);
+                if (usersModel.registerUser(filter))
                 {
-                   return new UserController(electContext).getElectionsById(user);
+                    return Ok();
                 }
             }
-            return BadRequest(new { message = "Ошибка валидации" });
+            return BadRequest(new { message = "Ошибка" });
         }
 
-        [HttpPost("send-vote")]
-        public string SendVote()
+        [HttpPost("login-user")]
+        public IActionResult LoginUser([FromBody] LoginFilter filter)
         {
-            return "подтверждение";
+            if (ModelState.IsValid)
+            {
+                Users usersModel = new Users(electContext);
+                User user = usersModel.loginUser(filter);
+                if (user != null)
+                {
+                    return Ok(new { id = user.ID, username = user.Username, LIK = user.LIK, role = user.Role.ToString("g") });
+                }
+            }
+            return BadRequest(new { message = "Ошибка" });
+        }
+
+        [HttpPost("get-elections-by-user")]
+        public IActionResult getElectionsByUserId([FromBody][Bind("ID")] GetElectionsByUserIdFilter filter)
+        {
+            if (ModelState.IsValid && filter.UserId != 0)
+            {
+                int userId = filter.UserId;
+                Users usersModel = new Users(electContext);
+                List<Election> elections = usersModel.getElectionsByUserId(userId);
+                if (elections != null)
+                    return Ok(elections);
+            }
+            return BadRequest(new { message = "Ошибка" });
         }
     }
 }

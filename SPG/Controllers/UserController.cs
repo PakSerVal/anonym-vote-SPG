@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using SPG.Data;
-using SPG.Models.Db;
+using SPG.Models.Enities;
 using Microsoft.EntityFrameworkCore;
 
 namespace SPG.Controllers
@@ -30,13 +30,13 @@ namespace SPG.Controllers
             if (userIdWrap.ID != 0)
             {
                 int userId = userIdWrap.ID;
-                User election = electContext.Users
+                User user = electContext.Users
                     .Include(u => u.ElectionVoters)
                     .ThenInclude(ev => ev.Election)
                     .ThenInclude(e => e.Candidates)
                     .SingleOrDefault(u => u.ID == userId);
                 List<Election> elections = new List<Election>();
-                foreach (ElectionVoter ev in election.ElectionVoters)
+                foreach (ElectionVoter ev in user.ElectionVoters)
                 {
                     elections.Add(ev.Election);
                 }

@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Text;
 using System.Linq;
-using System.Threading.Tasks;
 using SPG.Data;
-using SPG.Models.Db;
+using SPG.Models.Enities;
+using System.Security.Cryptography;
 
 namespace SPG.Utils
 {
@@ -17,6 +17,23 @@ namespace SPG.Utils
                 return true;
             }
             return false;
+        }
+
+        public static string getSalt(int length = 32)
+        {
+            byte[] randomArray = new byte[length];
+            string randomString;
+            RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider();
+            rng.GetBytes(randomArray);
+            randomString = Convert.ToBase64String(randomArray);
+            return randomString;
+        }
+
+        public static string getPasswordHash(string password, string salt)
+        {
+            var provider = new SHA1CryptoServiceProvider();
+            byte[] bytes = Encoding.UTF8.GetBytes(String.Concat(password, salt));
+            return Convert.ToBase64String(provider.ComputeHash(bytes));
         }
     }
 }

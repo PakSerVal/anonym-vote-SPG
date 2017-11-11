@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 
-namespace SPG.Models.Db
+namespace SPG.Models.Enities
 {
     public enum UserRole : byte
     {
@@ -21,6 +21,18 @@ namespace SPG.Models.Db
 
         [Required]
         public UserRole Role { get; set; }
+
+        public string Username { get; set; }
+
+        public string Password { get; set; }
+
+        public string SignatureModulus { get; set; }
+
+        public string SignaturePubExponent { get; set; }
+
+        public string salt { get; set; }
+
+        public bool isRegistred { get; set; } = false;
 
         public ICollection<ElectionVoter> ElectionVoters { get; set; }
     }

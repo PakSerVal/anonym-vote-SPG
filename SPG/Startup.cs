@@ -28,6 +28,15 @@ namespace SPG
             string connection = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<ElectContext>(options =>
                 options.UseSqlServer(connection));
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll", p =>
+                {
+                    p.AllowAnyOrigin()
+                    .AllowAnyHeader()
+                    .AllowAnyMethod();
+                });
+            });
             services.AddMvc().AddJsonOptions(options => {
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
             });
@@ -40,7 +49,7 @@ namespace SPG
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            app.UseCors("AllowAll");
             app.UseMvc();
         }
     }

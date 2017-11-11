@@ -6,14 +6,14 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.EntityFrameworkCore.Storage.Internal;
 using SPG.Data;
-using SPG.Models.Db;
+using SPG.Models.Enities;
 using System;
 
 namespace SPG.Migrations
 {
     [DbContext(typeof(ElectContext))]
-    [Migration("20171107042000_UserElectionRelation")]
-    partial class UserElectionRelation
+    [Migration("20171110213830_Secondary")]
+    partial class Secondary
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -22,7 +22,7 @@ namespace SPG.Migrations
                 .HasAnnotation("ProductVersion", "2.0.0-rtm-26452")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("SPG.Models.Db.Candidate", b =>
+            modelBuilder.Entity("SPG.Models.Enities.Candidate", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd();
@@ -39,7 +39,7 @@ namespace SPG.Migrations
                     b.ToTable("Candidates");
                 });
 
-            modelBuilder.Entity("SPG.Models.Db.Election", b =>
+            modelBuilder.Entity("SPG.Models.Enities.Election", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd();
@@ -52,7 +52,7 @@ namespace SPG.Migrations
                     b.ToTable("Elections");
                 });
 
-            modelBuilder.Entity("SPG.Models.Db.ElectionVoter", b =>
+            modelBuilder.Entity("SPG.Models.Enities.ElectionVoter", b =>
                 {
                     b.Property<int>("ElectionId");
 
@@ -65,7 +65,7 @@ namespace SPG.Migrations
                     b.ToTable("ElectionVoters");
                 });
 
-            modelBuilder.Entity("SPG.Models.Db.User", b =>
+            modelBuilder.Entity("SPG.Models.Enities.User", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd();
@@ -73,28 +73,40 @@ namespace SPG.Migrations
                     b.Property<string>("LIK")
                         .IsRequired();
 
+                    b.Property<string>("Password");
+
                     b.Property<byte>("Role");
+
+                    b.Property<string>("SignatureModulus");
+
+                    b.Property<string>("SignaturePubExponent");
+
+                    b.Property<string>("UserName");
+
+                    b.Property<bool>("isRegistred");
+
+                    b.Property<string>("salt");
 
                     b.HasKey("ID");
 
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("SPG.Models.Db.Candidate", b =>
+            modelBuilder.Entity("SPG.Models.Enities.Candidate", b =>
                 {
-                    b.HasOne("SPG.Models.Db.Election", "Election")
+                    b.HasOne("SPG.Models.Enities.Election", "Election")
                         .WithMany("Candidates")
                         .HasForeignKey("ElectionID");
                 });
 
-            modelBuilder.Entity("SPG.Models.Db.ElectionVoter", b =>
+            modelBuilder.Entity("SPG.Models.Enities.ElectionVoter", b =>
                 {
-                    b.HasOne("SPG.Models.Db.Election", "Election")
+                    b.HasOne("SPG.Models.Enities.Election", "Election")
                         .WithMany("ElectionVoters")
                         .HasForeignKey("ElectionId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("SPG.Models.Db.User", "Voter")
+                    b.HasOne("SPG.Models.Enities.User", "Voter")
                         .WithMany("ElectionVoters")
                         .HasForeignKey("VoterId")
                         .OnDelete(DeleteBehavior.Cascade);
