@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using SPG.Data;
-using SPG.Models.Enities;
+using SPG.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace SPG.Controllers

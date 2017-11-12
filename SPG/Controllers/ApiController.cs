@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SPG.Data;
 using SPG.Models;
-using SPG.Models.Enities;
+using SPG.Models.Entities;
 using SPG.Utils;
-using SPG.Models.Filters.Users;
+using SPG.Models.Api.Input;
 using System.Collections.Generic;
 
 
@@ -49,7 +49,7 @@ namespace SPG.Controllers
         }
 
         [HttpPost("get-elections-by-user")]
-        public IActionResult getElectionsByUserId([FromBody][Bind("ID")] GetElectionsByUserIdFilter filter)
+        public IActionResult getElectionsByUserId([FromBody] GetElectionsByUserIdFilter filter)
         {
             if (ModelState.IsValid && filter.UserId != 0)
             {
@@ -58,6 +58,16 @@ namespace SPG.Controllers
                 List<Election> elections = usersModel.getElectionsByUserId(userId);
                 if (elections != null)
                     return Ok(elections);
+            }
+            return BadRequest(new { message = "Ошибка" });
+        }
+
+        [HttpPost("send-bulletin")]
+        public IActionResult sendBulletin([FromBody] SendBulletinFilter filter)
+        {
+            if (ModelState.IsValid)
+            {
+                    return Ok();
             }
             return BadRequest(new { message = "Ошибка" });
         }

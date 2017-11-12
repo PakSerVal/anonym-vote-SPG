@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 
-namespace SPG.Models.Enities
+namespace SPG.Models.Entities
 {
     public class Election
     {

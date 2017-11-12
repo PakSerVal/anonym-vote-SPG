@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 
-namespace SPG.Models.Filters.Users
+namespace SPG.Models.Api.Input
 {
     public class RegisterFilter
     {

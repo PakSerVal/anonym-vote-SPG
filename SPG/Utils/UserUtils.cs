@@ -2,7 +2,7 @@
 using System.Text;
 using System.Linq;
 using SPG.Data;
-using SPG.Models.Enities;
+using SPG.Models.Entities;
 using System.Security.Cryptography;
 
 namespace SPG.Utils

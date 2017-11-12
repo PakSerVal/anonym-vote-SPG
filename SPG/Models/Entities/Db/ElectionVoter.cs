@@ -4,15 +4,19 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 
-namespace SPG.Models.Enities
-{
-    public class Candidate
-    {
-        public int ID { get; set; }
 
+namespace SPG.Models.Entities
+{
+    public class ElectionVoter
+    {
         [Required]
-        public string FIO { get; set; }
+        public int ElectionId { get; set; }
 
         public Election Election { get; set; }
+
+        [Required]
+        public int VoterId { get; set; }
+
+        public User Voter { get; set; }
     }
 }

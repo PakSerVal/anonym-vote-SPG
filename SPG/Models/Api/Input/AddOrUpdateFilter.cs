@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
-using SPG.Models.Enities;
+using SPG.Models.Entities;
 
-namespace SPG.Models.Filters.Candidates
+namespace SPG.Models.Api.Input
 {
     public class AddOrUpdateFilter
     {

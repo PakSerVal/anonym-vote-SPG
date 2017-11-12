@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.EntityFrameworkCore.Storage.Internal;
 using SPG.Data;
-using SPG.Models.Enities;
+using SPG.Models.Entities;
 using System;
 
 namespace SPG.Migrations

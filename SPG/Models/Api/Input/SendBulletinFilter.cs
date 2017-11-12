@@ -4,11 +4,17 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 
-namespace SPG.Models.Filters.Users
+namespace SPG.Models.Api.Input
 {
-    public class GetElectionsByUserIdFilter
+    public class SendBulletinFilter
     {
         [Required]
         public int UserId { get; set; }
+
+        [Required]
+        public string Data { get; set; }
+
+        [Required]
+        public string Signature { get; set; }
     }
 }

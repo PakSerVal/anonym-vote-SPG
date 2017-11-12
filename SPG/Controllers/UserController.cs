@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using SPG.Data;
-using SPG.Models.Enities;
+using SPG.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace SPG.Controllers

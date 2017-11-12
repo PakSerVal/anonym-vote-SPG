@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using SPG.Data;
-using SPG.Models.Enities;
+using SPG.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 using SPG.Utils;
 using System.Security.Cryptography;
-using SPG.Models.Filters.Users;
+using SPG.Models.Api.Input;
 
 namespace SPG.Models
 {
