@@ -53,7 +53,7 @@ namespace SPG.Models
                 .Include(u => u.ElectionVoters)
                 .ThenInclude(ev => ev.Election)
                 .ThenInclude(e => e.Candidates)
-                .SingleOrDefault(u => u.ID == userId);
+                .SingleOrDefault(u => u.ID == userId && u.isCastingDone == false);
             if (user != null)
             {
                 List<Election> elections = new List<Election>();

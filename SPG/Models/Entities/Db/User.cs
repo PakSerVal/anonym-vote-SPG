@@ -34,6 +34,8 @@ namespace SPG.Models.Entities
 
         public bool isRegistred { get; set; } = false;
 
+        public bool isCastingDone { get; set; } = false;
+
         public ICollection<ElectionVoter> ElectionVoters { get; set; }
     }
 }

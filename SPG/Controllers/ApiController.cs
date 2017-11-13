@@ -1,11 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc;
 using SPG.Data;
 using SPG.Models;
 using SPG.Models.Entities;
-using SPG.Utils;
 using SPG.Models.Api.Input;
-using System.Collections.Generic;
-
 
 namespace SPG.Controllers
 {
@@ -13,10 +11,12 @@ namespace SPG.Controllers
     public class ApiController : Controller
     {
         private ElectContext electContext;
+        private Config config;
 
-        public ApiController(ElectContext electContext)
+        public ApiController(ElectContext electContext, Config config)
         {
             this.electContext = electContext;
+            this.config = config;
         }
 
         [HttpPost("register-user")]
@@ -29,8 +29,9 @@ namespace SPG.Controllers
                 {
                     return Ok();
                 }
+                return BadRequest(new { message = "Ошибка при регистрации" });
             }
-            return BadRequest(new { message = "Ошибка" });
+            return BadRequest(ModelState);
         }
 
         [HttpPost("login-user")]
@@ -42,7 +43,7 @@ namespace SPG.Controllers
                 User user = usersModel.loginUser(filter);
                 if (user != null)
                 {
-                    return Ok(new { id = user.ID, username = user.Username, LIK = user.LIK, role = user.Role.ToString("g") });
+                    return Ok(new { id = user.ID, username = user.Username, LIK = user.LIK, role = user.Role.ToString("g"), isCastingDone = user.isCastingDone });
                 }
             }
             return BadRequest(new { message = "Ошибка" });
@@ -67,7 +68,7 @@ namespace SPG.Controllers
         {
             if (ModelState.IsValid)
             {
-                    return Ok();
+
             }
             return BadRequest(new { message = "Ошибка" });
         }

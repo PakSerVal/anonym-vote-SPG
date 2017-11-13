@@ -25,6 +25,7 @@ namespace SPG
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<Config>();
             string connection = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<ElectContext>(options =>
                 options.UseSqlServer(connection));
