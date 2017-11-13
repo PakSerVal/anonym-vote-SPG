@@ -20,6 +20,13 @@ namespace SPG.Models
             this.electContext = electContext;
         }
 
+        public User getUserById(int userId)
+        {
+            User user = electContext.Users
+                .SingleOrDefault(u => u.ID == userId);
+            return user;
+        }
+
         public bool registerUser(RegisterFilter filter)
         {
             User userToRegister = electContext.Users.FirstOrDefault(u => u.LIK == filter.LIK && u.isRegistred == false);

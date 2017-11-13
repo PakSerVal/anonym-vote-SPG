@@ -68,7 +68,16 @@ namespace SPG.Controllers
         {
             if (ModelState.IsValid)
             {
-
+                Bulletins bulletinModel = new Bulletins(config);
+                Users userModel = new Users(electContext);
+                User user = userModel.getUserById(filter.UserId);
+                if (bulletinModel.sendBulletin(filter.UserId, filter.Data, filter.Signature, user.SignaturePubExponent, user.SignatureModulus))
+                {
+                    user.isCastingDone = true;
+                    electContext.Users.Update(user);
+                    electContext.SaveChanges();
+                    return Ok();
+                }
             }
             return BadRequest(new { message = "Ошибка" });
         }

@@ -9,6 +9,6 @@ namespace SPG
     {
         public Config(){ }
 
-        public string SHG_URL = "http://localhost:50233/api/shg";
+        public string SHG_URL = "http://localhost:61189";
     }
 }
