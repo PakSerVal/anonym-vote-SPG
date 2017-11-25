@@ -25,5 +25,15 @@ namespace SPG.Utils
             byte[] bytes = Encoding.UTF8.GetBytes(String.Concat(password, salt));
             return Convert.ToBase64String(provider.ComputeHash(bytes));
         }
+
+        public static bool isAdmin(User user, ElectContext electContext)
+        {
+            User findUser = electContext.Users.SingleOrDefault(u => u.ID == user.ID && u.LIK == user.LIK && u.Role == UserRole.admin && u.Password == getPasswordHash(user.Password, u.salt));
+            if (findUser != null)
+            {
+                return true;
+            }
+            return false;
+        }
     }
 }

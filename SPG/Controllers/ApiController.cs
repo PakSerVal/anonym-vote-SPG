@@ -4,6 +4,9 @@ using SPG.Data;
 using SPG.Models;
 using SPG.Models.Entities;
 using SPG.Models.Api.Input;
+using SPG.Utils;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace SPG.Controllers
 {
@@ -81,5 +84,40 @@ namespace SPG.Controllers
             }
             return BadRequest(new { message = "Ошибка" });
         }
+
+        [HttpGet("get-elgamal-pub-key")]
+        public IActionResult getPubKeys()
+        {
+            return Ok(config.MixNetPubKey);
+        }
+
+        //Admin
+        [HttpPost("get-all-elections")]
+        public IActionResult getAllElections([FromBody] User filter)
+        {
+            if (ModelState.IsValid)
+            {
+                if (UserUtils.isAdmin(filter, electContext)) {
+                    List<Election> elections = electContext.Elections.Include(e => e.Candidates).ToList();
+                    return Ok(elections);
+                }
+            }
+            return BadRequest();
+        }
+
+        [HttpPost("get-all-candidates")]
+        public IActionResult getAllCandidates([FromBody] User filter)
+        {
+            if (ModelState.IsValid)
+            {
+                if (UserUtils.isAdmin(filter, electContext))
+                {
+                    List<Candidate> candidates = electContext.Candidates.ToList();
+                    return Ok(candidates);
+                }
+            }
+            return BadRequest();
+        }
+
     }
 }
