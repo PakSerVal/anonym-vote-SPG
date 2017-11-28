@@ -29,7 +29,7 @@ namespace SPG.Models
 
         public bool registerUser(RegisterFilter filter)
         {
-            User userToRegister = electContext.Users.FirstOrDefault(u => u.LIK == filter.LIK && u.isRegistred == false);
+            User userToRegister = electContext.Users.FirstOrDefault(u => u.LIK == filter.LIK && u.isRegistred == false && u.Username != filter.Username);
             if (userToRegister != null)
             {
                 userToRegister.isRegistred = true;
@@ -72,6 +72,67 @@ namespace SPG.Models
                 return elections;
             }
             return null;
+        }
+
+        public List<object> getAllUsers()
+        {
+
+            List<User> users = electContext.Users.Include(u => u.ElectionVoters).ThenInclude(ev => ev.Election).ToList();
+            List<object> outputUsers = new List<object>();
+            foreach (User user in users)
+            {
+                List<object> elections = new List<object>();
+                foreach (ElectionVoter ev in user.ElectionVoters)
+                {
+                    elections.Add(new
+                    {
+                        id = ev.ElectionId,
+                        name = ev.Election.Name
+                    }
+                    );
+                }
+                var userData = new
+                {
+                    id = user.ID,
+                    lik = user.LIK,
+                    role = user.Role.ToString("g"),
+                    username = user.Username,
+                    isRegistred = user.isRegistred,
+                    isCastingDone = user.isCastingDone,
+                    elections = elections
+                };
+                outputUsers.Add(userData);
+            }
+            return outputUsers;
+        }
+
+        public int addUser(User user, Election[] elections)
+        {
+            List<ElectionVoter> electionVoters = new List<ElectionVoter>();
+            foreach(Election election in elections)
+            {
+                ElectionVoter ev = new ElectionVoter();
+                ev.ElectionId = election.ID;
+                ev.VoterId = user.ID;
+                electionVoters.Add(ev);
+            }
+            user.ElectionVoters = electionVoters;
+            electContext.Users.Add(user);
+            electContext.SaveChanges();
+            return user.ID;
+        }
+
+        public int deleteUser(int userId)
+        {
+            User user = electContext.Users.Include(u => u.ElectionVoters).AsNoTracking()
+                .SingleOrDefault(u => u.ID == userId);
+            foreach(ElectionVoter ev in user.ElectionVoters)
+            {
+                electContext.ElectionVoters.Remove(ev);
+            }
+            electContext.Users.Remove(user);
+            electContext.SaveChanges();
+            return userId;
         }
     }
 }

@@ -92,6 +92,24 @@ namespace SPG.Controllers
         }
 
         //Admin
+        [HttpPost("get-election-by-id")]
+        public IActionResult getElectionById([FromBody] GetElectionByIdFilter filter)
+        {
+            if (ModelState.IsValid)
+            {
+                if (UserUtils.isAdmin(filter.user, electContext))
+                {
+                    Elections electionModel = new Elections(electContext);
+                    Election election = electionModel.getElectionById(filter.electionId);
+                    if (election != null)
+                    {
+                        return Ok(election);
+                    }
+                }
+            }
+            return BadRequest();
+        }
+
         [HttpPost("get-all-elections")]
         public IActionResult getAllElections([FromBody] User filter)
         {
@@ -119,5 +137,96 @@ namespace SPG.Controllers
             return BadRequest();
         }
 
+        [HttpPost("add-election")]
+        public IActionResult addElection([FromBody] SaveElectionFilter filter)
+        {
+            if (ModelState.IsValid)
+            {
+                if (UserUtils.isAdmin(filter.user, electContext))
+                {
+                    Election election = filter.election;
+                    Elections electionModel = new Elections(electContext);
+                    electionModel.addElection(election);
+                    return Ok();
+                }
+            }
+            return BadRequest();
+        }
+
+        [HttpPost("update-election")]
+        public IActionResult updateElection([FromBody] SaveElectionFilter filter)
+        {
+            if (ModelState.IsValid)
+            {
+                if (UserUtils.isAdmin(filter.user, electContext))
+                {
+                    Election election = filter.election;
+                    Elections electionModel = new Elections(electContext);
+                    electionModel.updateElection(election);
+                    return Ok();
+                }
+            }
+            return BadRequest();
+        }
+
+        [HttpPost("delete-election")]
+        public IActionResult deleteElection([FromBody] DeleteElectionFilter filter)
+        {
+            if (ModelState.IsValid)
+            {
+                if (UserUtils.isAdmin(filter.user, electContext))
+                {
+                    Elections electionModel = new Elections(electContext);
+                    electionModel.deleteElection(filter.electionId);
+                    return Ok();
+                }
+            }
+            return BadRequest();
+        }
+
+        [HttpPost("get-all-users")]
+        public IActionResult getAllUsers([FromBody] User filter)
+        {
+            if (ModelState.IsValid)
+            {
+                if (UserUtils.isAdmin(filter, electContext))
+                {
+                    Users userModel = new Users(electContext);
+                    var outputUsers = userModel.getAllUsers();
+                    return Ok(outputUsers);
+                }
+            }
+            return BadRequest();
+        }
+
+        [HttpPost("add-user")]
+        public IActionResult addUser([FromBody] AddUserFilter filter)
+        {
+            if (ModelState.IsValid)
+            {
+                if (UserUtils.isAdmin(filter.user, electContext))
+                {
+                    Users userModel= new Users(electContext);
+                    userModel.addUser(filter.addUser, filter.elections);
+                    return Ok();
+                }
+            }
+            return BadRequest();
+        }
+
+        [HttpPost("delete-user")]
+        public IActionResult deleteUser([FromBody] DeleteUserFilter filter)
+        {
+            if (ModelState.IsValid)
+            {
+                if (UserUtils.isAdmin(filter.user, electContext))
+                {
+                    Users userModel = new Users(electContext);
+                    userModel.deleteUser(filter.userId);
+                    return Ok();
+                }
+            }
+            return BadRequest();
+        }
     }
 }
