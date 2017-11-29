@@ -27,11 +27,11 @@ namespace SPG.Models
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             return client.PostAsync(actioUri, content).Result;
         }
-        public bool sendBulletin(int userId, string data, string signature, string signaturePubExponent, string signatureModulus)
+        public bool sendBulletin(string userLIK, string data, string signature, string signaturePubExponent, string signatureModulus)
         {
             string serializedObjectData = JsonConvert.SerializeObject(
                 new {
-                    userId = userId, data = data, signature = signature, signaturePubExponent = signaturePubExponent, signatureModulus = signatureModulus
+                    userLik = userLIK, data = data, signature = signature, signaturePubExponent = signaturePubExponent, signatureModulus = signatureModulus
                 });
             HttpResponseMessage response = requestToSHG(serializedObjectData, "api/shg/save-bulletin");
             if (response.IsSuccessStatusCode)
