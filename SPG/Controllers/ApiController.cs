@@ -32,9 +32,8 @@ namespace SPG.Controllers
                 {
                     return Ok();
                 }
-                return BadRequest(new { message = "Ошибка при регистрации" });
             }
-            return BadRequest(ModelState);
+            return BadRequest();
         }
 
         [HttpPost("login-user")]
@@ -49,7 +48,7 @@ namespace SPG.Controllers
                     return Ok(new { id = user.ID, username = user.Username, LIK = user.LIK, role = user.Role.ToString("g"), isCastingDone = user.isCastingDone });
                 }
             }
-            return BadRequest(new { message = "Ошибка" });
+            return BadRequest();
         }
 
         [HttpPost("get-elections-by-user")]
@@ -63,7 +62,7 @@ namespace SPG.Controllers
                 if (elections != null)
                     return Ok(elections);
             }
-            return BadRequest(new { message = "Ошибка" });
+            return BadRequest();
         }
 
         [HttpPost("send-bulletin")]
@@ -82,7 +81,7 @@ namespace SPG.Controllers
                     return Ok();
                 }
             }
-            return BadRequest(new { message = "Ошибка" });
+            return BadRequest();
         }
 
         [HttpGet("get-elgamal-pub-key")]
